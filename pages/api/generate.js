@@ -6,14 +6,14 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-  const keywords = req.body.keywords || "reset, password";
+  const keywords = req.body.keywords;
 
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(keywords),
-      temperature: 0.6,
-      max_tokens: 500,
+      temperature: 0.7,
+      max_tokens: 100,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch (error) {
@@ -33,7 +33,5 @@ export default async function (req, res) {
 }
 
 function generatePrompt(keywords) {
-  const parsedKeywords = keywords;
-  console.log(parsedKeywords);
-  return `Write three utterances from the user's perspective using a selection from the following words: ${parsedKeywords}.`;
+  return `Write three utterances from a customer's perspective with only a selection from the following list of words: ${keywords}.`;
 }
