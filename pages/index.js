@@ -91,16 +91,17 @@ export default function Home({}) {
         );
       }
 
-      const data = await response.json();
       setIsLoading(false);
       setError(null);
+
+      const data = await response.json();
 
       const parseUtterance = (result) => {
         const parsedResult = result.split(/\n\d\.\s/).slice(1);
 
         return parsedResult.map((sentence) => {
-          if (sentence.startsWith('"') && sentence.endsWith('"')) {
-            return sentence.slice(1, -1);
+          if (sentence.startsWith('"')) {
+            return sentence.replace(/"/g, "");
           } else {
             return sentence;
           }
@@ -117,6 +118,12 @@ export default function Home({}) {
       console.error(error);
       setError(error.message);
     }
+  };
+
+  const clearUtterance = () => {
+    setUtterance([]);
+    setIsLoading(false);
+    setError(null);
   };
 
   // Popper State --------------------
@@ -187,29 +194,38 @@ export default function Home({}) {
               <Divider />
 
               <Item>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontWeight: 600, color: "text.secondary" }}
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
                 >
-                  Utterances
-                </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: 600, color: "text.secondary" }}
+                  >
+                    Utterances
+                  </Typography>
+                  <Button onClick={clearUtterance}>Clear All</Button>
+                </Stack>
               </Item>
             </Paper>
 
-            <Item sx={{ overflowY: "auto" }}>
-              <Stack spacing={2}>
-                {utterance.map((item, index) => {
-                  return (
-                    <TextField
-                      key={index}
-                      size="small"
-                      defaultValue={item}
-                      sx={{ borderRadius: "6px" }}
-                    />
-                  );
-                })}
-              </Stack>
-            </Item>
+            {!!utterance.length && (
+              <Item sx={{ overflowY: "auto" }}>
+                <Stack spacing={2}>
+                  {utterance.map((item, index) => {
+                    return (
+                      <TextField
+                        key={index}
+                        size="small"
+                        defaultValue={item}
+                        sx={{ borderRadius: "6px" }}
+                      />
+                    );
+                  })}
+                </Stack>
+              </Item>
+            )}
 
             <Item sx={{ mb: 2 }} onMouseLeave={handlePopperClose}>
               <Button
@@ -235,7 +251,12 @@ export default function Home({}) {
                         const keywords = intent.split(" ").join(", ");
                         fetchUtterance(event, keywords);
                       }}
-                      sx={{ color: "text.primary" }}
+                      sx={{
+                        color: "text.primary",
+                        fontWeight: 400,
+                        justifyContent: "flex-start",
+                        pl: 3,
+                      }}
                     >
                       Generate with intent only
                     </Button>
@@ -245,9 +266,32 @@ export default function Home({}) {
                         const keywords = context.join(", ");
                         fetchUtterance(event, keywords);
                       }}
-                      sx={{ color: "text.primary" }}
+                      sx={{
+                        color: "text.primary",
+                        fontWeight: 400,
+                        justifyContent: "flex-start",
+                        pl: 3,
+                      }}
                     >
-                      Generate with additional context
+                      Generate with context only
+                    </Button>
+                    <Button
+                      size="large"
+                      onClick={(event) => {
+                        const keywords = intent
+                          .split(" ")
+                          .concat(context)
+                          .join(", ");
+                        fetchUtterance(event, keywords);
+                      }}
+                      sx={{
+                        color: "text.primary",
+                        fontWeight: 400,
+                        justifyContent: "flex-start",
+                        pl: 3,
+                      }}
+                    >
+                      Generate with intent and context
                     </Button>
                   </Stack>
                 </Paper>
