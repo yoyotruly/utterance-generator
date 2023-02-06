@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   Divider,
   Input,
   Paper,
@@ -144,7 +145,7 @@ export default function Home({}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Stack spacing={5} alignItems="center" p={6} sx={{ minHeight: "100vh" }}>
+      <Stack spacing={5} alignItems="center" p={6} sx={{ height: "100vh" }}>
         <Typography variant="h4" component="h1" fontWeight="500">
           Welcome to Utterance Generator
         </Typography>
@@ -227,7 +228,10 @@ export default function Home({}) {
               </Item>
             )}
 
-            <Item sx={{ mb: 2 }} onMouseLeave={handlePopperClose}>
+            <Item
+              sx={{ mb: 2, position: "relative" }}
+              onMouseLeave={handlePopperClose}
+            >
               <Button
                 variant="contained"
                 size="large"
@@ -238,6 +242,18 @@ export default function Home({}) {
               >
                 AI Generate
               </Button>
+              {isLoading && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-12px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              )}
               <Popper
                 open={open}
                 anchorEl={anchorEl}
