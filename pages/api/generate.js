@@ -33,5 +33,5 @@ export default async function (req, res) {
 }
 
 function generatePrompt(keywords) {
-  return `Write three utterances from a customer's perspective with only a selection from the following list of words: ${keywords}.`;
+  return `Write three utterances from a customer's perspective with only two out of the following words: ${keywords}.`;
 }
