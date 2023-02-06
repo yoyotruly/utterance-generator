@@ -21,7 +21,7 @@ const Item = styled(Box)(({ theme }) => ({
 
 export default function Home({}) {
   // Intent State --------------------
-  const [intent, setIntent] = useState("reset password");
+  const [intent, setIntent] = useState("");
   const handleChangeIntent = (event) => {
     setIntent(event.target.value);
   };
@@ -84,15 +84,16 @@ export default function Home({}) {
         body: JSON.stringify({ keywords: keywords }),
       });
 
-      const data = await response.json();
-      setIsLoading(false);
-
       if (response.status !== 200) {
         throw (
           data.error ||
           new Error(`Request failed with status ${response.status}`)
         );
       }
+
+      const data = await response.json();
+      setIsLoading(false);
+      setError(null);
 
       const parseUtterance = (result) => {
         const parsedResult = result.split(/\n\d\.\s/).slice(1);
@@ -226,21 +227,25 @@ export default function Home({}) {
                 anchorEl={anchorEl}
                 onClick={handlePopperClose}
               >
-                <Paper elevation={24} sx={{ width: "434px" }}>
+                <Paper elevation={24} sx={{ width: "434px", p: "8px 0" }}>
                   <Stack>
                     <Button
+                      size="large"
                       onClick={(event) => {
                         const keywords = intent.split(" ").join(", ");
                         fetchUtterance(event, keywords);
                       }}
+                      sx={{ color: "text.primary" }}
                     >
                       Generate with intent only
                     </Button>
                     <Button
+                      size="large"
                       onClick={(event) => {
                         const keywords = context.join(", ");
                         fetchUtterance(event, keywords);
                       }}
+                      sx={{ color: "text.primary" }}
                     >
                       Generate with additional context
                     </Button>
@@ -248,7 +253,11 @@ export default function Home({}) {
                 </Paper>
               </Popper>
 
-              {error && <Alert severity="warning">{error}</Alert>}
+              {error && (
+                <Alert severity="warning" sx={{ mt: 1 }}>
+                  {error}
+                </Alert>
+              )}
             </Item>
           </Stack>
         </Paper>
