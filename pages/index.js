@@ -73,6 +73,11 @@ export default function Home({}) {
 
   const fetchUtterance = async (event, keywords) => {
     event.preventDefault();
+    setError(null);
+
+    if (keywords.trim().length === 0) {
+      return setError("Please enter a valid intent or context to start.");
+    }
 
     setIsLoading(true);
 
@@ -85,15 +90,14 @@ export default function Home({}) {
         body: JSON.stringify({ keywords: keywords }),
       });
 
+      setIsLoading(false);
+
       if (response.status !== 200) {
         throw (
           data.error ||
           new Error(`Request failed with status ${response.status}`)
         );
       }
-
-      setIsLoading(false);
-      setError(null);
 
       const data = await response.json();
 
@@ -108,8 +112,6 @@ export default function Home({}) {
           }
         });
       };
-
-      console.log(parseUtterance(data.result));
 
       setUtterance((prevUtterance) => [
         ...prevUtterance,
@@ -228,32 +230,32 @@ export default function Home({}) {
               </Item>
             )}
 
-            <Item
-              sx={{ mb: 2, position: "relative" }}
-              onMouseLeave={handlePopperClose}
-            >
-              <Button
-                variant="contained"
-                size="large"
-                fullWidth
-                disabled={isLoading}
-                onMouseEnter={handlePopperOpen}
-                sx={{ borderRadius: "10px" }}
-              >
-                AI Generate
-              </Button>
-              {isLoading && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: "-12px",
-                    marginLeft: "-12px",
-                  }}
-                />
-              )}
+            <Item sx={{ mb: 2 }} onMouseLeave={handlePopperClose}>
+              <Box sx={{ position: "relative" }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  disabled={isLoading}
+                  onMouseEnter={handlePopperOpen}
+                  sx={{ borderRadius: "10px" }}
+                >
+                  AI Generate
+                </Button>
+                {isLoading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
+              </Box>
+
               <Popper
                 open={open}
                 anchorEl={anchorEl}
