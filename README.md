@@ -18,9 +18,11 @@ Conversation Designers
 
 ## Feature Offering
 
-1. Auto utterance generation provides inspiration to conversation designers and overcome writer's block
-2. This feature helps designers save time in the most dreaded area of the design process and kickstart prototype sooner
-3. It reduces repetitive tasks and allows designers can focus on high value-add aspects
+Auto utterance generation:
+
+1. provides inspiration to conversation designers and helps them to overcome writer's block
+2. saves time in the most dreaded area of the design process and kickstarts prototype sooner
+3. reduces repetitive tasks and allows designers can focus on high value-add aspects
 
 ## Improvement Ideas
 
@@ -67,7 +69,7 @@ For new intent, as the request comes in, a process needs to classify if it belon
 
 **_Suggestion_**
 
-Implment an autocomplete/typeahead system similar to Gmail, further integrating AI Assist into users' workflow. As designers type, if similar sentences exist, a prompt can show up to allow tab completion. This autocompletion feature can be implemented to assist utterance writing, as well as intent and context.
+Implement an autocomplete/typeahead system similar to Gmail, further integrating AI Assist into users' workflow. As designers type, if similar sentences exist, a prompt can show up to allow tab completion. This autocompletion feature can be implemented to assist utterance writing, as well as intent and context.
 
 **_Constraints_**
 
