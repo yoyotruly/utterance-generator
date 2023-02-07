@@ -80,4 +80,4 @@ Implement an autocomplete/typeahead system similar to Gmail, further integrating
 
 ## Architecture Implementation
 
-[TODO: insert diagram]
+![architecture](/docs/images/architecture_diagram.png)
